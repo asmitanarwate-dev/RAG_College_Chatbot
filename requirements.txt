@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+python-dotenv
+pymongo[srv]
+certifi
+google-genai
+numpy
+pypdf
+langchain-text-splitters
