@@ -24,10 +24,6 @@
             overflow-x: hidden;
         }
 
-        /* =========================
-           BACKGROUND
-        ========================= */
-
         .background {
             position: fixed;
             inset: 0;
@@ -58,9 +54,7 @@
             bottom: 30px;
         }
 
-        /* =========================
-           NAVBAR
-        ========================= */
+        /* NAVBAR */
 
         .navbar {
             width: 100%;
@@ -127,9 +121,7 @@
             box-shadow: 0 0 12px #22c55e;
         }
 
-        /* =========================
-           MAIN
-        ========================= */
+        /* MAIN */
 
         .container {
             width: min(1050px, 94%);
@@ -179,9 +171,7 @@
             line-height: 1.7;
         }
 
-        /* =========================
-           CHAT WINDOW
-        ========================= */
+        /* CHAT */
 
         .chat-wrapper {
             border: 1px solid rgba(255,255,255,.10);
@@ -193,8 +183,6 @@
                 inset 0 1px rgba(255,255,255,.05);
             overflow: hidden;
         }
-
-        /* CHAT TOP */
 
         .chat-top {
             height: 68px;
@@ -219,11 +207,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
+
             background: linear-gradient(
                 135deg,
                 #4f46e5,
                 #0891b2
             );
+
             font-size: 18px;
         }
 
@@ -254,9 +244,7 @@
             background: rgba(255,255,255,.08);
         }
 
-        /* =========================
-           MESSAGES
-        ========================= */
+        /* MESSAGES */
 
         .messages {
             height: 500px;
@@ -314,18 +302,20 @@
 
         .user .bubble {
             color: white;
+
             background: linear-gradient(
                 135deg,
                 #4f46e5,
                 #2563eb
             );
+
             border-bottom-right-radius: 5px;
-            box-shadow: 0 8px 25px rgba(37,99,235,.2);
+
+            box-shadow:
+                0 8px 25px rgba(37,99,235,.2);
         }
 
-        /* =========================
-           SOURCES
-        ========================= */
+        /* SOURCES */
 
         .sources {
             margin-top: 9px;
@@ -351,9 +341,7 @@
             background: rgba(255,255,255,.035);
         }
 
-        /* =========================
-           INPUT
-        ========================= */
+        /* INPUT */
 
         .input-section {
             padding: 17px;
@@ -405,7 +393,8 @@
 
         #sendBtn:hover {
             transform: translateY(-1px);
-            box-shadow: 0 8px 20px rgba(99,102,241,.25);
+            box-shadow:
+                0 8px 20px rgba(99,102,241,.25);
         }
 
         #sendBtn:disabled {
@@ -419,9 +408,7 @@
             font-style: italic;
         }
 
-        /* =========================
-           FOOTER
-        ========================= */
+        /* FOOTER */
 
         .footer {
             text-align: center;
@@ -434,9 +421,7 @@
             color: #818cf8;
         }
 
-        /* =========================
-           MOBILE
-        ========================= */
+        /* MOBILE */
 
         @media(max-width:650px) {
 
@@ -492,11 +477,6 @@
     <div class="orb two"></div>
 </div>
 
-
-<!-- =========================
-     NAVBAR
-========================= -->
-
 <nav class="navbar">
 
     <div class="brand">
@@ -519,11 +499,6 @@
 
 </nav>
 
-
-<!-- =========================
-     MAIN
-========================= -->
-
 <main class="container">
 
     <section class="hero">
@@ -545,11 +520,6 @@
 
     </section>
 
-
-    <!-- =========================
-         CHAT
-    ========================= -->
-
     <section class="chat-wrapper">
 
         <div class="chat-top">
@@ -567,12 +537,14 @@
 
             </div>
 
-            <button class="clear-btn" onclick="clearChat()">
+            <button
+                class="clear-btn"
+                onclick="clearChat()"
+            >
                 ↻ Clear
             </button>
 
         </div>
-
 
         <div class="messages" id="messages">
 
@@ -596,7 +568,6 @@ Ask me anything about your college — admissions, courses, examinations, attend
 
         </div>
 
-
         <div class="input-section">
 
             <div class="input-box">
@@ -608,7 +579,10 @@ Ask me anything about your college — admissions, courses, examinations, attend
                     autocomplete="off"
                 >
 
-                <button id="sendBtn" onclick="sendQuestion()">
+                <button
+                    id="sendBtn"
+                    onclick="sendQuestion()"
+                >
                     Send ↗
                 </button>
 
@@ -618,13 +592,11 @@ Ask me anything about your college — admissions, courses, examinations, attend
 
     </section>
 
-
     <div class="footer">
         CampusMind • <span>RAG AI</span> • College Knowledge Assistant
     </div>
 
 </main>
-
 
 <script>
 
@@ -890,8 +862,14 @@ async function sendQuestion() {
             );
 
 
-        const data =
-            await response.json();
+        let data;
+
+        try {
+            data = await response.json();
+        }
+        catch {
+            data = {};
+        }
 
 
         loadingMessage.remove();
@@ -901,7 +879,7 @@ async function sendQuestion() {
 
             addMessage(
                 data.detail ||
-                "Something went wrong.",
+                "Server error. Please try again.",
                 "bot"
             );
 
@@ -929,7 +907,7 @@ async function sendQuestion() {
 
 
         addMessage(
-            "❌ Unable to connect to CampusMind AI. Please try again.",
+            "❌ Unable to connect to CampusMind AI. Please check your internet connection and try again.",
             "bot"
         );
 
