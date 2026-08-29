@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from pathlib import Path
 import shutil
@@ -38,11 +39,16 @@ class ChatRequest(BaseModel):
 
 
 # ==========================================
-# Root API
+# Frontend
 # ==========================================
 
 @app.get("/")
 def root():
+    frontend_path = Path("frontend/index.html")
+
+    if frontend_path.exists():
+        return FileResponse(frontend_path)
+
     return {
         "message": "RAG-Based College Chatbot API is running!",
         "status": "success"
