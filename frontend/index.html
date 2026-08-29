@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CampusMind | College AI Assistant</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #f1f5f9;
+            color: #0f172a;
+        }
+
+        /* HEADER */
+
+        .header {
+            height: 72px;
+            background: #172554;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 6%;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 42px;
+            height: 42px;
+            background: white;
+            color: #172554;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .brand h2 {
+            font-size: 21px;
+        }
+
+        .brand p {
+            font-size: 12px;
+            opacity: 0.75;
+            margin-top: 3px;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            background: rgba(255,255,255,0.12);
+            padding: 9px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+        }
+
+        /* MAIN */
+
+        .container {
+            max-width: 1050px;
+            margin: 0 auto;
+            padding: 45px 20px;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .hero h1 {
+            font-size: 36px;
+            color: #172554;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            color: #64748b;
+            font-size: 15px;
+        }
+
+        /* CHAT CARD */
+
+        .chat-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 35px rgba(15, 23, 42, 0.09);
+            border: 1px solid #e2e8f0;
+        }
+
+        .chat-header {
+            padding: 17px 22px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-title {
+            font-weight: bold;
+            color: #172554;
+        }
+
+        .clear-btn {
+            background: transparent;
+            color: #64748b;
+            border: 1px solid #cbd5e1;
+            padding: 7px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .clear-btn:hover {
+            background: #f8fafc;
+        }
+
+        /* MESSAGES */
+
+        .messages {
+            height: 470px;
+            overflow-y: auto;
+            padding: 25px;
+            background: #fafcff;
+        }
+
+        .message {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .message-content {
+            max-width: 78%;
+        }
+
+        .bubble {
+            padding: 14px 17px;
+            border-radius: 15px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            font-size: 14px;
+        }
+
+        .bot .bubble {
+            background: #eef2ff;
+            color: #1e293b;
+            border-bottom-left-radius: 4px;
+        }
+
+        .user .bubble {
+            background: #2563eb;
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .label {
+            font-size: 11px;
+            color: #64748b;
+            margin-bottom: 5px;
+        }
+
+        .user .label {
+            text-align: right;
+        }
+
+        /* SOURCES */
+
+        .sources {
+            margin-top: 10px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        .sources-title {
+            font-size: 12px;
+            font-weight: bold;
+            color: #172554;
+            margin-bottom: 8px;
+        }
+
+        .source {
+            background: #f8fafc;
+            border-left: 3px solid #2563eb;
+            padding: 8px 10px;
+            margin-top: 6px;
+            border-radius: 5px;
+            font-size: 11px;
+            color: #475569;
+        }
+
+        /* INPUT */
+
+        .input-area {
+            padding: 17px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            gap: 10px;
+            background: white;
+        }
+
+        #question {
+            flex: 1;
+            height: 48px;
+            padding: 0 15px;
+            border: 1px solid #cbd5e1;
+            border-radius: 11px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        #question:focus {
+            border-color: #2563eb;
+        }
+
+        #sendBtn {
+            min-width: 90px;
+            border: none;
+            border-radius: 11px;
+            background: #2563eb;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        #sendBtn:hover {
+            background: #1d4ed8;
+        }
+
+        #sendBtn:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        .typing {
+            color: #64748b;
+            font-style: italic;
+        }
+
+        /* FOOTER */
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #94a3b8;
+            font-size: 11px;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 650px) {
+
+            .header {
+                padding: 0 18px;
+            }
+
+            .brand h2 {
+                font-size: 18px;
+            }
+
+            .brand p {
+                display: none;
+            }
+
+            .status {
+                font-size: 11px;
+                padding: 7px 10px;
+            }
+
+            .container {
+                padding: 25px 12px;
+            }
+
+            .hero h1 {
+                font-size: 28px;
+            }
+
+            .messages {
+                height: 430px;
+                padding: 16px;
+            }
+
+            .message-content {
+                max-width: 90%;
+            }
+
+            .input-area {
+                padding: 12px;
+            }
+
+            #sendBtn {
+                min-width: 70px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="brand">
+
+        <div class="logo">🎓</div>
+
+        <div>
+            <h2>CampusMind</h2>
+            <p>AI College Information Assistant</p>
+        </div>
+
+    </div>
+
+    <div class="status">
+        <span class="status-dot"></span>
+        AI Online
+    </div>
+
+</header>
+
+
+<main class="container">
+
+    <section class="hero">
+
+        <h1>College AI Assistant</h1>
+
+        <p>
+            Ask questions about admissions, courses, examinations and student services.
+        </p>
+
+    </section>
+
+
+    <section class="chat-card">
+
+        <div class="chat-header">
+
+            <div class="chat-title">
+                💬 CampusMind Assistant
+            </div>
+
+            <button class="clear-btn" onclick="clearChat()">
+                Clear Chat
+            </button>
+
+        </div>
+
+
+        <div class="messages" id="messages">
+
+            <div class="message bot">
+
+                <div class="message-content">
+
+                    <div class="label">
+                        CampusMind AI
+                    </div>
+
+                    <div class="bubble">
+                        👋 Hello! I'm CampusMind.
+
+                        Ask me anything about the college information available in my knowledge base.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="input-area">
+
+            <input
+                type="text"
+                id="question"
+                placeholder="Ask your college-related question..."
+                autocomplete="off"
+            >
+
+            <button id="sendBtn" onclick="sendQuestion()">
+                Send
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <div class="footer">
+        CampusMind • Retrieval-Augmented Generation • Powered by AI
+    </div>
+
+</main>
+
+
+<script>
+
+/* ==========================================
+   API URL
+========================================== */
+
+const API_URL = "http://127.0.0.1:8000/chat";
+
+
+const questionInput = document.getElementById("question");
+const messages = document.getElementById("messages");
+const sendBtn = document.getElementById("sendBtn");
+
+
+/* ==========================================
+   ENTER KEY
+========================================== */
+
+questionInput.addEventListener("keydown", function(event) {
+
+    if (event.key === "Enter") {
+        sendQuestion();
+    }
+
+});
+
+
+/* ==========================================
+   ADD MESSAGE
+========================================== */
+
+function addMessage(text, type) {
+
+    const message = document.createElement("div");
+
+    message.className = "message " + type;
+
+
+    const content = document.createElement("div");
+
+    content.className = "message-content";
+
+
+    const label = document.createElement("div");
+
+    label.className = "label";
+
+    label.textContent =
+        type === "user"
+        ? "You"
+        : "CampusMind AI";
+
+
+    const bubble = document.createElement("div");
+
+    bubble.className = "bubble";
+
+    bubble.textContent = text;
+
+
+    content.appendChild(label);
+
+    content.appendChild(bubble);
+
+    message.appendChild(content);
+
+    messages.appendChild(message);
+
+
+    messages.scrollTop = messages.scrollHeight;
+
+
+    return message;
+}
+
+
+/* ==========================================
+   ADD SOURCES
+========================================== */
+
+function addSources(sources) {
+
+    if (!Array.isArray(sources) || sources.length === 0) {
+        return;
+    }
+
+
+    const message = document.createElement("div");
+
+    message.className = "message bot";
+
+
+    const content = document.createElement("div");
+
+    content.className = "message-content";
+
+
+    const sourcesBox = document.createElement("div");
+
+    sourcesBox.className = "sources";
+
+
+    const title = document.createElement("div");
+
+    title.className = "sources-title";
+
+    title.textContent = "📚 Sources";
+
+
+    sourcesBox.appendChild(title);
+
+
+    /*
+       Remove duplicate PDF sources
+    */
+
+    const uniqueSources = [];
+
+    const seen = new Set();
+
+
+    sources.forEach(function(source) {
+
+        const sourceName = source.source || "Unknown document";
+
+        if (!seen.has(sourceName)) {
+
+            seen.add(sourceName);
+
+            uniqueSources.push(source);
+
+        }
+
+    });
+
+
+    uniqueSources.forEach(function(source) {
+
+        const sourceDiv = document.createElement("div");
+
+        sourceDiv.className = "source";
+
+
+        const score =
+            typeof source.score === "number"
+            ? source.score.toFixed(3)
+            : "N/A";
+
+
+        sourceDiv.textContent =
+            "📄 " +
+            (source.source || "Unknown document") +
+            " — Similarity: " +
+            score;
+
+
+        sourcesBox.appendChild(sourceDiv);
+
+    });
+
+
+    content.appendChild(sourcesBox);
+
+    message.appendChild(content);
+
+    messages.appendChild(message);
+
+
+    messages.scrollTop = messages.scrollHeight;
+}
+
+
+/* ==========================================
+   SEND QUESTION
+========================================== */
+
+async function sendQuestion() {
+
+    const question = questionInput.value.trim();
+
+
+    if (!question) {
+        return;
+    }
+
+
+    addMessage(question, "user");
+
+
+    questionInput.value = "";
+
+    sendBtn.disabled = true;
+
+
+    const loadingMessage = addMessage(
+        "🤖 Thinking...",
+        "bot"
+    );
+
+
+    loadingMessage
+        .querySelector(".bubble")
+        .classList.add("typing");
+
+
+    try {
+
+        const response = await fetch(API_URL, {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                question: question
+            })
+
+        });
+
+
+        const data = await response.json();
+
+
+        loadingMessage.remove();
+
+
+        if (!response.ok) {
+
+            addMessage(
+                data.detail || "Something went wrong.",
+                "bot"
+            );
+
+            return;
+        }
+
+
+        addMessage(
+            data.answer ||
+            "I could not find this information in the college documents.",
+            "bot"
+        );
+
+
+        addSources(data.sources);
+
+
+    }
+
+    catch (error) {
+
+        loadingMessage.remove();
+
+
+        addMessage(
+            "❌ Cannot connect to the backend. Please make sure FastAPI is running on port 8000.",
+            "bot"
+        );
+
+
+        console.error("CHAT ERROR:", error);
+
+    }
+
+    finally {
+
+        sendBtn.disabled = false;
+
+        questionInput.focus();
+
+    }
+
+}
+
+
+/* ==========================================
+   CLEAR CHAT
+========================================== */
+
+function clearChat() {
+
+    messages.innerHTML = `
+
+        <div class="message bot">
+
+            <div class="message-content">
+
+                <div class="label">
+                    CampusMind AI
+                </div>
+
+                <div class="bubble">
+                    👋 Hello! I'm CampusMind.
+
+                    Ask me anything about the college information available in my knowledge base.
+                </div>
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+</script>
+
+</body>
+</html>
