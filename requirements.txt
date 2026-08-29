@@ -7,3 +7,4 @@ google-genai
 numpy
 pypdf
 langchain-text-splitters
+python-multipart
